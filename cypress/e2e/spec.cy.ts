@@ -1,11 +1,29 @@
 import { IUser } from "../interfaces/user";
+import { URLs } from "../urls";
 import { CustomPageObjects } from "./customobject";
 import { configureAppInterceptor } from "./interceptor";
-
+const cto = new CustomPageObjects();
 describe('SIS Enterprise Complete Login', () => {
 
   before(() => {
     configureAppInterceptor();
+  })
+
+  it('Checking the Rest API for Login', () => {
+    const mockData = cto.getMockData();
+    cy.request({
+      method: 'POST',
+      url: URLs.LoginUser,
+      headers:{
+      },
+      body: {
+        password: mockData.validCred.username,
+        userName: mockData.validCred.password
+      }
+    }).then((response)=>{
+      expect(response.status).to.eq(200); // Assuming a successful creation status code
+      expect(response.body).to.have.property('id');
+    })
   })
 
   // it('SIS Portal Navigation & See Landing Page Text', () => {
@@ -84,7 +102,7 @@ describe('SIS Enterprise Complete Login', () => {
 
 
   it('SIS ENterprise Login Form', () => {
-    const mockData: IUser = new CustomPageObjects().getMockData();
+    const mockData: IUser = cto.getMockData();
     cy.doNavigationSISPortal();
     cy.doLogin(mockData.validCred.username, mockData.validCred.password);
     cy.contains(mockData.surgeryOption).click();
