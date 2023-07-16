@@ -64,7 +64,20 @@ Cypress.Commands.add('doClickByText', (
 });
 
 
+Cypress.Commands.add('serviceChecks', (method: "POST" | "GET" | "DELETE" | "PATCH", serviceUrl: string, alias: string, tabName: string) => {
+  cy.intercept(method, serviceUrl).as(alias)
+  cy.get('.desktop-section-header.submenu-item.desktop-nav-button').contains(tabName).click();
+  return cy.wait(`@${alias}`);
+});
 
+Cypress.Commands.add('getDatesFromColumn', (columnName) => {
+  return cy.get(`table tr td:nth-child(0)`).then(($elements) => {
+    const dates = $elements.map((index, el) => {
+      return new Date(el.innerText);
+    });
+    return dates.get();
+  });
+});
 
 
 declare namespace Cypress {
@@ -74,6 +87,7 @@ declare namespace Cypress {
     doGetElement(elementid: string): Chainable<JQuery<HTMLElement>>;
     doNavigationSISPortal(): Chainable<JQuery<HTMLElement>>;
     doClickByText(element: Cypress.Chainable<JQuery<HTMLElement>>, textToBeClicked: string, index: number): Chainable<JQuery<HTMLElement>>;
+    serviceChecks(method: "POST" | "GET" | "DELETE" | "PATCH", serviceUrl: string, alias: string, tabName: string): Chainable<any>;
   }
 }
 // declare global {

@@ -9,18 +9,18 @@ describe('SIS Enterprise Complete Login', () => {
     configureAppInterceptor();
   })
 
-  it('Checking the Rest API for Login', () => {
+  xit('Checking the Rest API for Login', () => {
     const mockData = cto.getMockData();
     cy.request({
       method: 'POST',
       url: URLs.LoginUser,
-      headers:{
+      headers: {
       },
       body: {
         password: mockData.validCred.username,
         userName: mockData.validCred.password
       }
-    }).then((response)=>{
+    }).then((response) => {
       expect(response.status).to.eq(200); // Assuming a successful creation status code
       expect(response.body).to.have.property('id');
     })
@@ -99,9 +99,30 @@ describe('SIS Enterprise Complete Login', () => {
   //   })
   // })
 
+  xit('check for the Financial Clearance', () => {
+    const mockData: IUser = cto.getMockData();
+    cy.doNavigationSISPortal();
+    cy.doLogin(mockData.validCred.username, mockData.validCred.password);
+    cy.contains(mockData.surgeryOption).click();
+
+    cy.serviceChecks('POST', 'https://sisenterpriseapicypresstraining.azurewebsites.net/api/InsuranceTracker/GetTrackerData', 'getTrackerData', 'Financial Clearance').then((res: any) => {
+      expect(res.response.statusCode).to.eql(200)
+    })
+  })
 
 
-  it('SIS ENterprise Login Form', () => {
+  it('check for sorting in Financial Clearance Screen', () => {
+    const mockData: IUser = cto.getMockData();
+    cy.doNavigationSISPortal();
+    cy.doLogin(mockData.validCred.username, mockData.validCred.password);
+    cy.contains(mockData.surgeryOption).click();
+    cy.get('.desktop-section-header.submenu-item.desktop-nav-button').contains("Financial Clearance").click();
+    cy.get('.p-element.created-date').click();
+    cy.get('.p-element.created-date').click();
+   
+  })
+
+  xit('SIS ENterprise Login Form', () => {
     const mockData: IUser = cto.getMockData();
     cy.doNavigationSISPortal();
     cy.doLogin(mockData.validCred.username, mockData.validCred.password);
