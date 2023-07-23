@@ -4,6 +4,7 @@ import { WaitMethods } from "./CoreConstants";
 import { UserLogin } from "../e2e/UserLogin";
 import { IUserLogin } from "../e2e/interfaces/IUserLogin";
 import { ApiEndpoint } from "./api-endpoints";
+import 'cypress-file-upload';
 
 //#region constants
 const customObjects = new UserLogin();

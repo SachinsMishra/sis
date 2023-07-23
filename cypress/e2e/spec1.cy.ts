@@ -181,14 +181,34 @@ describe('End to End testing on consents scenario', () => {
             cy.get('.signature-area #div_').findByText('Yes').click();
 
             cy.get('.sisMultiselectContainer').click();
-            cy.get('.sisMultiselect.scroller.scrollbar.ps-container.rounded-top-corner > li')
-                .each((element) => {
-                    const text = element.text().trim();
-                    if (text == 'Anesthesiologist' || text == 'Physician') {
-                        console.log(text)
-                        cy.wrap(element).click();
-                    }
+            const option: string[] = ["Anesthesiologist", "Physician"];
+            option.forEach((val) => {
+                cy.get(`[title="${val}"]`).then((element) => {
+                    element[0].click(); // have 2 elements clicking on first other is hidden
                 })
+            });
+            // checking if the options have been checked
+            const checkedItems = [];
+            cy.wrap(
+                option.forEach((val) => {
+                    cy.get(`[title="${val}"] > .fa.fa-check`)
+                        .then((element) => {
+                            checkedItems.push(element[0]);
+                        })
+                })
+            ).then(() => {
+                expect(checkedItems.length).eq(option.length);
+            })
+        })
+
+        it('Upload File', () => {
+            cy.get('#cke_27').then((element) => {
+                element[0].click();
+            })
+            cy.findByText('Upload:').click();
+            const fileName = 'pfi-briefings.txt';
+            cy.get('input[type=file]').selectFile(fileName, { force: true });
+
         })
 
         //Add an attachment with some large file and showing an assertion that the file is too big
