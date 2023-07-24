@@ -41,16 +41,18 @@ def search_keyword():
     data = request.get_json()
     directory = data.get('directory')
     keywords = data.get('keywords')
+    ignore_case = data.get('ignore_case')
+    exact_match = data.get('exact_match')
     if search_keys.folder_exists(directory):
         resultInfo=[];
-        search_results = search_keys.get_result(directory,keywords=keywords);
-        for filename, matches in search_results.items():
-            elem={
-                "filename":filename,
-                "match":matches
-            }
-            resultInfo.append(elem)
-        return jsonify(resultInfo)
+        search_results = search_keys.get_result(directory,keywords=keywords,ignore_case=ignore_case,exact_match=exact_match);
+        # for filename, matches in search_results.items():
+        #     elem={
+        #         "filename":filename,
+        #         "match":matches
+        #     }
+        #     resultInfo.append(elem)
+        return jsonify(search_results )
     else:
         return jsonify({
             "message":"Path does not exits"

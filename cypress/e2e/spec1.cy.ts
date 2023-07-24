@@ -20,7 +20,7 @@ describe('End to End testing on consents scenario', () => {
     })
     //After suite, actions to be performed
     after('logout', () => {
-        //cy.doLogOut(CommonGetLocators.defaultImageId, CommonGetLocators.logoutid, CommonGetLocators.yesbtnId)
+        cy.doLogOut(CommonGetLocators.defaultImageId, CommonGetLocators.logoutid, CommonGetLocators.yesbtnId)
     })
 
     describe('Adding a new consent in Application settings', () => {
