@@ -41,6 +41,7 @@ export interface IUserLogin {
     surgeryOption: string;
     insuranceCriteria: string;
     searchChar: string;
+    searchCode:string;
     searchCharId: string;
     ConsentsId: string;
     addButton: string;

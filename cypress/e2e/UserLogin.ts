@@ -8,6 +8,7 @@ export class UserLogin {
             insuranceCriteria: "RedTest Cross",
             searchChar: 'ConsentTwo',
             searchCharId: 'con',
+            searchCode: 'cod',
             ConsentsId: 'Consents',
             addButton: 'Add',
             consentTwoText: 'ConsentTwo',
